@@ -1,0 +1,10 @@
+DROP TABLE word_Counts;
+DROP TABLE files;
+CREATE TABLE files (line STRING);
+LOAD DATA LOCAL INPATH '/root/input.txt' INTO TABLE files;
+CREATE TABLE word_counts AS
+SELECT word, count(word) AS totalCount FROM
+(SELECT explode(split(line, ' ')) AS word FROM files) w
+GROUP BY word
+ORDER BY totalCount;
+SELECT * FROM word_counts;

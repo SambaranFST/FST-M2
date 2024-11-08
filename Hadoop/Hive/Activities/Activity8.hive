@@ -1,0 +1,15 @@
+-- Drop the table
+DROP TABLE zipcodes;
+
+-- Creating the zipcodes table
+CREATE TABLE zipcodes(RecordNumber int, Country string, City string, Zipcode int)
+PARTITIONED BY (state string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+-- Load data into the table
+LOAD DATA LOCAL INPATH '/root/zipcodes.csv' INTO TABLE zipcodes;
+
+-- Get Data From Partitions
+INSERT OVERWRITE LOCAL DIRECTORY 'HiveOutput9'
+SELECT * FROM zipcodes Where state='PR' AND Zipcode=704;

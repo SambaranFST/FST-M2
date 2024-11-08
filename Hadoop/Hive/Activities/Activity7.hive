@@ -1,0 +1,20 @@
+-- Drop the table
+DROP TABLE employee;
+
+-- Creating the employee table
+CREATE TABLE employee(id INT, name STRING, dept STRING, yoj INT, salary INT)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+TBLPROPERTIES("skip.header.line.count"="1");
+
+-- Load data into the table
+LOAD DATA LOCAL INPATH '/root/empData.csv' INTO TABLE employee;
+
+-- Export results to HDFS
+INSERT OVERWRITE DIRECTORY 'hdfs:///user/Sambaran/HiveOutput'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM employee where joinDate=2021;
+
+-- Export results to Local
+INSERT OVERWRITE LOCAL DIRECTORY '/root/HiveOutput'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM employee where joinDate=2022;
